@@ -1,0 +1,12 @@
+Hay que tener pyinstaller
+	pip install -U pyinstaller
+
+ejecutar
+	pyinstaller Etiqueta3.py
+
+
+con entorno grafico (usa pyinstaller por debajo):
+	pip install auto-py-to-exe	
+y luego:
+	auto-py-to-exe (desde consola)
+	y en Settings Import Config From JSON File: config auto-py-to-exe.json
