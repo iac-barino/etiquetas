@@ -11,9 +11,9 @@ def pedir_datos(datos_producto):
         """Recoge los datos ingresados y cierra la ventana."""
         try:
             
-            datos_producto.tono = entry_tono.get()
+            datos_producto.tono = entry_tono.get().upper()
             datos_producto.seleccion = int(entry_seleccion.get())          
-            datos_producto.calibre = int(entry_calibre.get())
+            datos_producto.calibre = entry_calibre.get().upper()
             datos_producto.fecha = entry_fecha.get()
 
             if datos_producto.seleccion <=3:
@@ -79,5 +79,4 @@ def pedir_datos(datos_producto):
 
     root.mainloop()
     root.destroy()
-
 
