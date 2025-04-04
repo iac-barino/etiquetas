@@ -1,7 +1,10 @@
 import tkinter as tk
 from tkinter import messagebox
+from ObtenerDatos import obtener_datos
+#from Datos import Datos 
 
-def pedir_numero_orden():
+
+def pedir_numero_orden(datos_producto):
     """
     Muestra un formulario con un único campo para ingresar el número de orden.
     Valida si el número está entre 10000 y 99999 antes de aceptarlo.
@@ -13,12 +16,18 @@ def pedir_numero_orden():
             
             # Aquí se realiza la comprobación de que el número exista en la base de datos
             if 10000 <= numero_orden <= 99999:
-                #messagebox.showinfo("Número válido", "El número de orden es válido.",parent=root)
-               # tk.messagebox.showinfo("Número válido", "El número de orden es válido.")
-                datos["numero_orden"] = numero_orden
-                root.quit()  # Cierra la ventana si el número es correcto
+                #Aquí buscará en la BBDD si es num existe
+                datosRecibidos = obtener_datos(numero_orden)
+                datos_producto.numOrden = numero_orden  # Actualiza el número de orden en el objeto Datos
+                datos_producto.nombreArticulo = datosRecibidos[0] if datosRecibidos else None
+                datos_producto.codBarras = datosRecibidos[1] if datosRecibidos else None
+
+                if datosRecibidos is None:
+                    messagebox.showerror("Número no encontrado", "El número de orden no se encuentra en la base de datos.")
+                else:
+                    root.quit()  # Cierra la ventana si el número es correcto
             else:
-                messagebox.showerror("Número inválido", "El número de orden debe tener 5 cifras.")
+                messagebox.showerror("Número inválido", "El número debe tener 5 cifras.")
         
         except ValueError:
             messagebox.showwarning("Entrada inválida", "Por favor, ingrese un número entero.")
@@ -49,14 +58,17 @@ def pedir_numero_orden():
     frame.place(relx=0.5, rely=0.5, anchor="center")  # Centra el frame en la ventana
 
     # Etiqueta para indicar qué debe ingresar el usuario
-    tk.Label(frame, text="Ingrese un número de orden:").pack(pady=10)
+
+    tk.Label(frame, text="Ingrese un número de orden:", font=("Arial", 12)).pack(pady=10)
+
+    
 
     # Campo de entrada para el número de orden
-    entry_orden = tk.Entry(frame)
+    entry_orden = tk.Entry(frame, font=("Arial", 12), width=23)
     entry_orden.pack(pady=5)
 
     # Botón para confirmar la entrada
-    btn_aceptar = tk.Button(frame, text="Aceptar", command=enviar)
+    btn_aceptar = tk.Button(frame, text="Aceptar", font=("Arial", 12), command=enviar)
     btn_aceptar.pack(pady=10)
 
     root.mainloop()  # Mantiene la ventana abierta hasta que el usuario interactúe
