@@ -18,7 +18,7 @@ def generar_etiqueta(datos_producto):
     c.rect(20 * mm, 25 * mm, 15 * mm, 20 * mm)  # Selección
     c.rect(35 * mm, 25 * mm, 15 * mm, 20 * mm)  # Calibre
     c.rect(50 * mm, 25 * mm, 35 * mm, 20 * mm)  # Fecha embalaje
-    c.rect(45 * mm, 5 * mm, 40 * mm, 20 * mm)  # CodArticulo
+    c.rect(50 * mm, 5 * mm, 35 * mm, 20 * mm)  # CodArticulo
     
     # Texto dentro de los recuadros
     c.setFont("Helvetica", 6)
@@ -68,18 +68,18 @@ def generar_etiqueta(datos_producto):
     c.drawString(52 * mm, 32 * mm, datos_producto.fecha)
 
     c.setFont("Helvetica", 6)
-    c.drawString(47 * mm, 20 * mm, "CODICE ARTICOLO")
-    c.drawString(47 * mm, 18 * mm, "ITEM NUMBER")
-    c.drawString(47 * mm, 16 * mm, "CÓDIGO ARTÍCULO")
+    c.drawString(52 * mm, 20 * mm, "CODICE ARTICOLO")
+    c.drawString(52 * mm, 18 * mm, "ITEM NUMBER")
+    c.drawString(52 * mm, 16 * mm, "CÓDIGO ARTÍCULO")
     c.setFont("Helvetica-Bold", 12)
-    c.drawString(47 * mm, 11 * mm, str(datos_producto.numOrden)[0:10])
+    c.drawString(52 * mm, 11 * mm, str(datos_producto.numOrden)[0:10])
     
     #generar codigo de barras
     barcode_ean = eanbc.Ean13BarcodeWidget(datos_producto.codBarras)
     barcode_ean.barHeight = 16 * mm
     barcode_drawing = Drawing(380 * mm, 17 * mm)
     barcode_drawing.add(barcode_ean)       
-    renderPDF.draw(barcode_drawing, c, 5 * mm, 6 * mm)
+    renderPDF.draw(barcode_drawing, c, 7 * mm, 6 * mm)
 
     c.showPage()
     c.save()    
