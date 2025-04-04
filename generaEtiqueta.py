@@ -1,7 +1,6 @@
-import os
 from reportlab.lib.pagesizes import mm
 from reportlab.pdfgen import canvas
-#from reportlab.lib.utils import ImageReader
+
 from reportlab.platypus import Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 
@@ -23,7 +22,6 @@ def generar_etiqueta(nombre_articulo, codigo, tono, fecha, barcode, seleccion, c
     c.rect(20 * mm, 25 * mm, 15 * mm, 20 * mm)  # Selección
     c.rect(35 * mm, 25 * mm, 15 * mm, 20 * mm)  # Calibre
     c.rect(50 * mm, 25 * mm, 35 * mm, 20 * mm)  # Fecha embalaje
-    #c.rect(5 * mm, 5 * mm, 40 * mm, 20 * mm)  # Código de barras
     c.rect(45 * mm, 5 * mm, 40 * mm, 20 * mm)  # CodArticulo
     
     # Texto dentro de los recuadros
@@ -82,27 +80,14 @@ def generar_etiqueta(nombre_articulo, codigo, tono, fecha, barcode, seleccion, c
     
     #generar codigo de barras
     barcode_ean = eanbc.Ean13BarcodeWidget(barcode)
-    #barcode_ean.barWidth = 2 * mm ancho de cada barra
     barcode_ean.barHeight = 16 * mm
     barcode_drawing = Drawing(380 * mm, 17 * mm)
     barcode_drawing.add(barcode_ean)       
     renderPDF.draw(barcode_drawing, c, 5 * mm, 6 * mm)
 
-    #imagen_barcode = ImageReader("CodBarras.png")
-    #c.drawImage(imagen_barcode, 5 * mm, 5 * mm, width=34 * mm, height=19 * mm)
-        
     c.showPage()
-    c.save()
-    print(f"Etiqueta guardada en {archivo_salida}")
-    os.startfile(archivo_salida)
+    c.save()    
+   
 
-# Ejemplo de uso
-generar_etiqueta(
-    nombre_articulo="MELBOURNE HOND 160X320/12 CON PRUEBA DE TEXTO MAS LARGO QUE ESCRIBO AQUI",
-    codigo=21207,
-    tono="I50",
-    fecha="11/03/2025",
-    barcode="8435451959805",
-    seleccion=1,
-    calibre=0
-)
+
+
