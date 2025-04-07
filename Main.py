@@ -4,6 +4,7 @@ from pedirDatos import pedir_datos
 from PedirNumOrden import pedir_numero_orden
 from Datos import DatosEtiqueta
 from ObtenerDatos import obtener_datos
+from tkinter import messagebox
 
 
 datos_producto = DatosEtiqueta()
@@ -13,18 +14,27 @@ numOrden=pedir_numero_orden(datos_producto)
 
 #Si llega aquí es que el número de orden es correcto y se encuentra en la bbdd
 
-# Obtener los datos desde el formulario
-pedir_datos(datos_producto)
-print ("ya ha recibido los datos")
+while(1):
+    # Obtener los datos desde el formulario
+    pedir_datos(datos_producto)
+    if datos_producto.is_valid():
+        #vuelve a buscar el cod de barras si la calidad es diferente a 1
+        if(datos_producto.seleccion!=1):
+            datosRecibidos = obtener_datos(datos_producto.numOrden,datos_producto.seleccion)
+            datos_producto.codBarras= datosRecibidos[3]
+        break
+    else:
+        messagebox.showwarning("Entrada inválida", "Por favor, rellene todos los campos correctamente.")
 
-if datos_producto.is_valid():
-    archivo_salida = "etiqueta3.pdf"
 
-    # Ejecutar la función para generar la etiqueta
-    generar_etiqueta(datos_producto)
-    print ("ya ha generado la etiqueta")
-    # Abrir el archivo automáticamente en Windows
-    if os.name == "nt":  
-        os.startfile(archivo_salida)
-    elif os.name == "posix":
-        os.system(f"xdg-open {archivo_salida}")  # Para Linux y macOS
+
+
+archivo_salida = "etiqueta3.pdf"
+# Ejecutar la función para generar la etiqueta
+generar_etiqueta(datos_producto)
+
+# Abrir el archivo automáticamente en Windows
+if os.name == "nt":  
+    os.startfile(archivo_salida)
+elif os.name == "posix":
+    os.system(f"xdg-open {archivo_salida}")  # Para Linux y macOS

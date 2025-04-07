@@ -3,7 +3,6 @@ from tkinter import messagebox
 from ObtenerDatos import obtener_datos
 #from Datos import Datos 
 
-
 def pedir_numero_orden(datos_producto):
     """
     Muestra un formulario con un único campo para ingresar el número de orden.
@@ -12,22 +11,22 @@ def pedir_numero_orden(datos_producto):
     def enviar():
         """Valida que se haya ingresado un número entero dentro del rango permitido."""
         try:
-            numero_orden = int(entry_orden.get())  # Convierte la entrada a entero
+            numero_orden = entry_orden.get()  # Convierte la entrada a entero
             
             # Aquí se realiza la comprobación de que el número exista en la base de datos
-            if 10000 <= numero_orden <= 99999:
+            if len(numero_orden)<=8:
                 #Aquí buscará en la BBDD si es num existe
-                datosRecibidos = obtener_datos(numero_orden)
+                datosRecibidos = obtener_datos(numero_orden,1)
                 datos_producto.numOrden = numero_orden  # Actualiza el número de orden en el objeto Datos
-                datos_producto.nombreArticulo = datosRecibidos[0] if datosRecibidos else None
-                datos_producto.codBarras = datosRecibidos[1] if datosRecibidos else None
+                datos_producto.nombreArticulo = datosRecibidos[2] if datosRecibidos else None
+                datos_producto.codBarras = datosRecibidos[3] if datosRecibidos else None
 
                 if datosRecibidos is None:
                     messagebox.showerror("Número no encontrado", "El número de orden no se encuentra en la base de datos.")
                 else:
                     root.quit()  # Cierra la ventana si el número es correcto
             else:
-                messagebox.showerror("Número inválido", "El número debe tener 5 cifras.")
+                messagebox.showerror("Número inválido", "El número debe tener como max 8 dígitos.")
         
         except ValueError:
             messagebox.showwarning("Entrada inválida", "Por favor, ingrese un número entero.")
@@ -60,8 +59,6 @@ def pedir_numero_orden(datos_producto):
     # Etiqueta para indicar qué debe ingresar el usuario
 
     tk.Label(frame, text="Ingrese un número de orden:", font=("Arial", 12)).pack(pady=10)
-
-    
 
     # Campo de entrada para el número de orden
     entry_orden = tk.Entry(frame, font=("Arial", 12), width=23)

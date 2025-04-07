@@ -29,6 +29,8 @@ def pedir_datos(datos_producto):
     root = tk.Tk()
     root.title("Ingresa Datos")
     root.geometry("300x270")
+    root.attributes("-topmost", True)
+
 
      # Calcular el tamaño de la pantalla y centrar la ventana
     pantalla_ancho = root.winfo_screenwidth()  # Obtener el ancho de la pantalla
@@ -56,6 +58,7 @@ def pedir_datos(datos_producto):
     # Como máximo 3
     tk.Label(root, text="Calidad:").pack(pady=2)
     entry_seleccion = tk.Entry(root, font=("Arial", 10), width=32)  # Aumento del tamaño
+    entry_seleccion.insert(0, "1")  # Insertar el nombre por defecto
     entry_seleccion.pack()
 
 
@@ -79,4 +82,4 @@ def pedir_datos(datos_producto):
 
     root.mainloop()
     root.destroy()
-
+    
