@@ -74,7 +74,7 @@ def generar_etiqueta(datos_producto):
     c.setFont("Helvetica-Bold", 12)
     c.drawString(52 * mm, 11 * mm, str(datos_producto.numOrden)[0:10])
     
-    #generar codigo de barras
+
     barcode_ean = eanbc.Ean13BarcodeWidget(datos_producto.codBarras)
     barcode_ean.barHeight = 16 * mm
     barcode_drawing = Drawing(380 * mm, 17 * mm)
@@ -83,7 +83,5 @@ def generar_etiqueta(datos_producto):
 
     c.showPage()
     c.save()    
-   
-
 
 

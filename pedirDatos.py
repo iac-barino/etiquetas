@@ -62,9 +62,11 @@ def pedir_datos(datos_producto):
     entry_seleccion.pack()
 
 
-    tk.Label(root, text="Tono:").pack(pady=2)
+    tk.Label(root, text="Tono:").pack()
     entry_tono = tk.Entry(root, font=("Arial", 10), width=32)  # Aumento del tamaño
     entry_tono.pack()
+    entry_tono.focus()
+
 
     tk.Label(root, text="Calibre:").pack(pady=2)
     entry_calibre = tk.Entry(root, font=("Arial", 10), width=32)  # Aumento del tamaño
@@ -79,6 +81,7 @@ def pedir_datos(datos_producto):
     # Botón para aceptar
     btn_aceptar = tk.Button(root, text="Aceptar", command=enviar)
     btn_aceptar.pack(pady=10)
+
 
     root.mainloop()
     root.destroy()

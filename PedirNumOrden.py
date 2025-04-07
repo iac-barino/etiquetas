@@ -63,6 +63,7 @@ def pedir_numero_orden(datos_producto):
     # Campo de entrada para el número de orden
     entry_orden = tk.Entry(frame, font=("Arial", 12), width=23)
     entry_orden.pack(pady=5)
+    entry_orden.focus() 
 
     # Botón para confirmar la entrada
     btn_aceptar = tk.Button(frame, text="Aceptar", font=("Arial", 12), command=enviar)
