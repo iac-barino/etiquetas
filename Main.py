@@ -16,6 +16,7 @@ numOrden=pedir_numero_orden(datos_producto)
 
 while(1): #Nop para de pedir datos hasta que se introduzcan correctamente
     pedir_datos(datos_producto)
+   
     if datos_producto.is_valid():
         if(datos_producto.seleccion!=1): #vuelve a buscar el cod de barras si la calidad es diferente a 1
             datosRecibidos = obtener_datos(datos_producto.numOrden,datos_producto.seleccion)
