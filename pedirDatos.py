@@ -65,12 +65,18 @@ def pedir_datos(datos_producto):
     tk.Label(root, text="Tono:").pack()
     entry_tono = tk.Entry(root, font=("Arial", 10), width=32)  # Aumento del tamaño
     entry_tono.pack()
-    entry_tono.focus()
+    #entry_tono.focus()
+    #root.after(100, lambda: entry_tono.focus())
 
+    def enfocar():
+        root.focus_force()  # Asegura que la ventana tenga foco
+        entry_tono.focus_force()  # Fuerza el foco sobre el campo
+        entry_tono.selection_range(0, tk.END) # Selecciona texto, útil para pruebas visuales
 
     tk.Label(root, text="Calibre:").pack(pady=2)
     entry_calibre = tk.Entry(root, font=("Arial", 10), width=32)  # Aumento del tamaño
     entry_calibre.pack()
+
 
     fecha_actual = datetime.now().strftime("%d/%m/%Y")
     tk.Label(root, text="Fecha:").pack(pady=2)
@@ -83,6 +89,7 @@ def pedir_datos(datos_producto):
     btn_aceptar.pack(pady=10)
 
 
+    root.after(50, enfocar)
     root.mainloop()
     root.destroy()
     

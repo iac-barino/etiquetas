@@ -41,7 +41,7 @@ def obtener_datos(numero_orden, calidad):
 
 
         resultado = cursor.fetchone()
-        print (resultado)
+        #print (resultado)
         return resultado if resultado else None
 
     except Exception as e:
