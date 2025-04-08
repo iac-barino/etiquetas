@@ -1,9 +1,9 @@
 import os
-from generaEtiqueta import generar_etiqueta 
-from pedirDatos import pedir_datos
+from GeneraEtiqueta import generar_etiqueta 
+from PedirDemasDatos import pedir_datos
 from PedirNumOrden import pedir_numero_orden
 from Datos import DatosEtiqueta
-from ObtenerDatos import obtener_datos
+from ObtenerDatosBBDD import obtener_datos
 from tkinter import messagebox
 
 
@@ -14,12 +14,10 @@ numOrden=pedir_numero_orden(datos_producto)
 
 #Si llega aquí es que el número de orden es correcto y se encuentra en la bbdd
 
-while(1):
-    # Obtener los datos desde el formulario
+while(1): #Nop para de pedir datos hasta que se introduzcan correctamente
     pedir_datos(datos_producto)
     if datos_producto.is_valid():
-        #vuelve a buscar el cod de barras si la calidad es diferente a 1
-        if(datos_producto.seleccion!=1):
+        if(datos_producto.seleccion!=1): #vuelve a buscar el cod de barras si la calidad es diferente a 1
             datosRecibidos = obtener_datos(datos_producto.numOrden,datos_producto.seleccion)
             datos_producto.codBarras= datosRecibidos[3]
         break
