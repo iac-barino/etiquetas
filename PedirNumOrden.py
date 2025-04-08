@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
-from ObtenerDatosBBDD import obtener_datos
+from ObtenerDatosBBDD import obtener_datos, obtener_datos_desplegable
+from tkinter import ttk  # Para usar combobox
 
 
 def pedir_numero_orden(datos_producto):
@@ -25,7 +26,7 @@ def pedir_numero_orden(datos_producto):
                     messagebox.showerror("Nombre no encontrado", "El nombre del artículo no se encuentra en la base de datos.")
                 elif datos_producto.codBarras is None:
                     messagebox.showerror("Código de barras no encontrado", "El código de barras no se encuentra en la base de datos.")
-                elif numero_orden[5]!="-":
+                elif len(numero_orden)==8 and numero_orden[5]!="-":
                     messagebox.showerror("Formato incorrecto", "El formato del número de orden es incorrecto. Debe tener 5 dígitos y opcionalmente un guión seguido de 2 dígitos.")
                 else:
                     root.quit()
@@ -64,6 +65,34 @@ def pedir_numero_orden(datos_producto):
 
     # Asociar Enter a botón aceptar
     entry_orden.bind("<Return>", lambda e: btn_aceptar.invoke())
+
+    def format_option(option):
+            """Formatea la opción para que se muestre el código seguido de la descripción."""
+            return f"{option[0]} - {option[1]}"
+        
+    opciones = obtener_datos_desplegable()
+    if opciones:
+        opciones_formateadas = [format_option(opcion) for opcion in opciones]
+
+        selected_option = tk.StringVar()
+
+        # Función que se ejecuta al seleccionar una opción del combobox
+        def on_combobox_select(event):
+            # Obtener la opción seleccionada
+            seleccionada = selected_option.get()
+            # Extraer el código del artículo (primer campo antes del guión)
+            codigo_articulo = seleccionada.split(" - ")[0]
+            # Asignar el código al campo de entrada
+            entry_orden.delete(0, tk.END)
+            entry_orden.insert(0, codigo_articulo)
+
+        # Crear el combobox con las opciones formateadas
+        dropdown = ttk.Combobox(frame, textvariable=selected_option, values=opciones_formateadas, width=32)
+        dropdown.set("Seleccione una opción")  # Valor por defecto
+        dropdown.pack(pady=5)
+
+        # Asociar el evento de selección al combobox
+        dropdown.bind("<<ComboboxSelected>>", on_combobox_select)
 
     btn_aceptar = tk.Button(frame, text="Aceptar", font=("Arial", 12), command=enviar)
     btn_aceptar.pack(pady=10)
