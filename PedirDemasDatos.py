@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
 from datetime import datetime
+from ObtenerDatosBBDD import obtener_datos_calidades
+from tkinter import ttk  # Para usar combobox
 
 def pedir_datos(datos_producto):
     """
@@ -10,7 +12,7 @@ def pedir_datos(datos_producto):
         """Recoge los datos ingresados y cierra la ventana."""
         try:
             datos_producto.tono = entry_tono.get().upper()
-            datos_producto.seleccion = int(entry_seleccion.get())          
+            datos_producto.seleccion = int(selected_calidad.get())          
             datos_producto.calibre = entry_calibre.get().upper()
             datos_producto.fecha = entry_fecha.get()
 
@@ -46,10 +48,31 @@ def pedir_datos(datos_producto):
     entry_articulo.config(state="disabled")
 
     # Selección (calidad)
-    tk.Label(root, text="Calidad:").pack(pady=2)
-    entry_seleccion = tk.Entry(root, font=("Arial", 10), width=40)
-    entry_seleccion.insert(0, "1")
-    entry_seleccion.pack()
+   
+    # Obtener las calidades posibles usando obtener_datos_calidades
+    calidades = obtener_datos_calidades(datos_producto.numOrden)
+    
+    if not calidades:
+        messagebox.showerror("Sin calidades", "No se encontraron calidades para este número de orden.")
+        root.quit()
+        return
+
+    # Convertir las calidades a una lista de números sin paréntesis ni comas
+    calidades = [str(calidad[0]) for calidad in calidades]
+
+    # Crear el combobox con las calidades
+    selected_calidad = tk.StringVar()
+
+    # Función para actualizar el valor de calidad seleccionado
+    def on_calidad_select(event):
+        seleccionada = selected_calidad.get()
+
+    # Crear el combobox para seleccionar la calidad
+    tk.Label(root, text="Calidad:").pack()
+    calidad_combobox = ttk.Combobox(root, textvariable=selected_calidad, values=calidades, font=("Arial", 10), width=38)
+    calidad_combobox.set("1")  # Establecer el valor por defecto como el más bajo (1)
+    calidad_combobox.pack(pady=5)
+    calidad_combobox.bind("<<ComboboxSelected>>", on_calidad_select)
 
     # Tono
     tk.Label(root, text="Tono:").pack()

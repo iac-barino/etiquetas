@@ -11,10 +11,10 @@ conn_str = (
     'PWD=inalco@limitronic;'
 )
 
-def obtener_datos(numero_orden, calidad):
-    
+def obtener_datos(numero_orden, calidad): 
 
 
+  
     try:
         conn = pyodbc.connect(conn_str)
         cursor = conn.cursor()
@@ -26,12 +26,11 @@ def obtener_datos(numero_orden, calidad):
             cadenaNumeroOrden = str(numero_orden)
 
         cursor.execute(
-            "SELECT * FROM iac_Etiquetas WHERE Orden LIKE ?",
-            ( cadenaNumeroOrden)
+            "SELECT * FROM iac_Etiquetas WHERE Orden LIKE ? AND idclase = ?",
+            ( cadenaNumeroOrden, calidad)
         )
 
         resultado = cursor.fetchone()
-        #print (resultado) #Imprimir el resultado de la consulta
         return resultado if resultado else None
 
     except Exception as e:
@@ -54,6 +53,35 @@ def obtener_datos_desplegable():
         )
 
         resultado = cursor.fetchall()
+        return resultado if resultado else None
+
+    except Exception as e:
+        print(f" Error al consultar la base de datos: {e}")
+        return None
+
+    finally:
+        if 'conn' in locals():
+            conn.close()
+
+
+def obtener_datos_calidades(numero_orden):
+    
+    try:
+        conn = pyodbc.connect(conn_str)
+        cursor = conn.cursor()
+
+        # Preparar y ejecutar la consulta
+        if len(str(numero_orden)) ==5:
+            cadenaNumeroOrden = str(numero_orden) + "%"
+        else:
+            cadenaNumeroOrden = str(numero_orden)
+
+
+        cursor.execute(
+            "SELECT DISTINCT idclase FROM iac_Etiquetas WHERE Orden LIKE ?",(cadenaNumeroOrden)
+        )
+
+        resultado = cursor.fetchall()
         #print (resultado) #Imprimir el resultado de la consulta
         return resultado if resultado else None
 
@@ -67,6 +95,5 @@ def obtener_datos_desplegable():
 
 
 
-
 # Para permitir importar esta función desde otro fichero
-__all__ = ['obtener_datos', 'obtener_datos_desplegable']
+__all__ = ['obtener_datos', 'obtener_datos_desplegable','obtener_datos_calidades']
