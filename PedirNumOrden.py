@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
-from ObtenerDatos import obtener_datos
-# from Datos import Datos 
+from ObtenerDatosBBDD import obtener_datos
+
 
 def pedir_numero_orden(datos_producto):
     """
@@ -13,7 +13,7 @@ def pedir_numero_orden(datos_producto):
         try:
             numero_orden = entry_orden.get()
             
-            if len(numero_orden) <= 8:
+            if len(numero_orden) ==5 or len(numero_orden) == 8:
                 datosRecibidos = obtener_datos(numero_orden, 1)
                 datos_producto.numOrden = numero_orden
                 datos_producto.nombreArticulo = datosRecibidos[2] if datosRecibidos else None
@@ -21,10 +21,16 @@ def pedir_numero_orden(datos_producto):
 
                 if datosRecibidos is None:
                     messagebox.showerror("Número no encontrado", "El número de orden no se encuentra en la base de datos.")
+                elif datos_producto.nombreArticulo is None:
+                    messagebox.showerror("Nombre no encontrado", "El nombre del artículo no se encuentra en la base de datos.")
+                elif datos_producto.codBarras is None:
+                    messagebox.showerror("Código de barras no encontrado", "El código de barras no se encuentra en la base de datos.")
+                elif numero_orden[5]!="-":
+                    messagebox.showerror("Formato incorrecto", "El formato del número de orden es incorrecto. Debe tener 5 dígitos y opcionalmente un guión seguido de 2 dígitos.")
                 else:
                     root.quit()
             else:
-                messagebox.showerror("Número inválido", "El número debe tener como máximo 8 dígitos.")
+                messagebox.showerror("Número inválido", "El número debe tener tener 5 dígitos númericos (opcionalmente se puede añadir un guión y dos díditos más).")
         
         except ValueError:
             messagebox.showwarning("Entrada inválida", "Por favor, ingrese un número entero.")
