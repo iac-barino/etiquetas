@@ -39,12 +39,12 @@ def pedir_numero_orden(datos_producto):
     # Crear ventana principal
     root = tk.Tk()
     root.title("Generador de Etiqueta")
-    root.geometry("300x320")
+    root.geometry("340x320")
 
     # Centrado de ventana
     pantalla_ancho = root.winfo_screenwidth()
     pantalla_alto = root.winfo_screenheight()
-    ventana_ancho = 300
+    ventana_ancho = 340
     ventana_alto = 320
     x = (pantalla_ancho // 2) - (ventana_ancho // 2)
     y = (pantalla_alto // 2) - (ventana_alto // 2)
@@ -59,7 +59,7 @@ def pedir_numero_orden(datos_producto):
 
     tk.Label(frame, text="Ingrese un número de orden:", font=("Arial", 12)).pack(pady=10)
 
-    entry_orden = tk.Entry(frame, font=("Arial", 12), width=23)
+    entry_orden = tk.Entry(frame, font=("Arial", 12), width=32)
     entry_orden.pack(pady=5)
     entry_orden.focus()
 
@@ -70,6 +70,7 @@ def pedir_numero_orden(datos_producto):
             """Formatea la opción para que se muestre el código seguido de la descripción."""
             return f"{option[0]} - {option[1]}"
         
+    
     opciones = obtener_datos_desplegable()
     if opciones:
         opciones_formateadas = [format_option(opcion) for opcion in opciones]
@@ -87,9 +88,14 @@ def pedir_numero_orden(datos_producto):
             entry_orden.insert(0, codigo_articulo)
 
         # Crear el combobox con las opciones formateadas
-        dropdown = ttk.Combobox(frame, textvariable=selected_option, values=opciones_formateadas, width=32)
+        dropdown = ttk.Combobox(frame, textvariable=selected_option, values=opciones_formateadas, width=45)  # Caja de entrada de tamaño 32
         dropdown.set("Seleccione una opción")  # Valor por defecto
         dropdown.pack(pady=5)
+
+        # Establecer el tamaño de la lista desplegada (más grande)
+        dropdown["height"] = 10 # Esto ajusta el número de elementos visibles en el desplegable
+        #dropdown.config(width=40) 
+       
 
         # Asociar el evento de selección al combobox
         dropdown.bind("<<ComboboxSelected>>", on_combobox_select)

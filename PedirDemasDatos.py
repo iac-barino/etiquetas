@@ -24,13 +24,13 @@ def pedir_datos(datos_producto):
     # Crear ventana principal
     root = tk.Tk()
     root.title("Ingresa Datos")
-    root.geometry("300x270")
+    root.geometry("340x320")
     root.attributes("-topmost", True)
 
     # Calcular el tamaño de la pantalla y centrar la ventana
     pantalla_ancho = root.winfo_screenwidth()
     pantalla_alto = root.winfo_screenheight()
-    ventana_ancho = 300
+    ventana_ancho = 340
     ventana_alto = 320
     x = (pantalla_ancho // 2) - (ventana_ancho // 2)
     y = (pantalla_alto // 2) - (ventana_alto // 2)
@@ -40,37 +40,37 @@ def pedir_datos(datos_producto):
     # Nombre de artículo (bloqueado)
     nombreDelArticulo = datos_producto.nombreArticulo
     tk.Label(root, text="Nombre de artículo:").pack(pady=2)
-    entry_articulo = tk.Entry(root, font=("Arial", 10), width=32)
+    entry_articulo = tk.Entry(root, font=("Arial", 10), width=40)
     entry_articulo.insert(0, nombreDelArticulo)
     entry_articulo.pack()
     entry_articulo.config(state="disabled")
 
     # Selección (calidad)
     tk.Label(root, text="Calidad:").pack(pady=2)
-    entry_seleccion = tk.Entry(root, font=("Arial", 10), width=32)
+    entry_seleccion = tk.Entry(root, font=("Arial", 10), width=40)
     entry_seleccion.insert(0, "1")
     entry_seleccion.pack()
 
     # Tono
     tk.Label(root, text="Tono:").pack()
-    entry_tono = tk.Entry(root, font=("Arial", 10), width=32)
+    entry_tono = tk.Entry(root, font=("Arial", 10), width=40)
     entry_tono.pack()
 
     # Calibre
     tk.Label(root, text="Calibre:").pack(pady=2)
-    entry_calibre = tk.Entry(root, font=("Arial", 10), width=32)
+    entry_calibre = tk.Entry(root, font=("Arial", 10), width=40)
     entry_calibre.pack()
 
     # Fecha
     fecha_actual = datetime.now().strftime("%d/%m/%Y")
     tk.Label(root, text="Fecha:").pack(pady=2)
-    entry_fecha = tk.Entry(root, font=("Arial", 10), width=32)
+    entry_fecha = tk.Entry(root, font=("Arial", 10), width=40)
     entry_fecha.insert(0, fecha_actual)
     entry_fecha.pack(pady=5)
 
     # Botón Aceptar
-    btn_aceptar = tk.Button(root, text="Aceptar", command=enviar)
-    btn_aceptar.pack(pady=10)
+    btn_aceptar = tk.Button(root, text="Aceptar", command=enviar, font=("Arial", 11), width=11)
+    btn_aceptar.pack(pady=15)
 
     # Enfocar tono al inicio
     def enfocar():
@@ -80,7 +80,7 @@ def pedir_datos(datos_producto):
 
     root.after(50, enfocar)
 
-    # ↩️ Navegación con Enter: Tono → Calibre → Fecha → Aceptar
+    # Navegación con Enter: Tono → Calibre → Fecha → Aceptar
     entry_tono.bind("<Return>", lambda e: entry_calibre.focus())
     entry_calibre.bind("<Return>", lambda e: entry_fecha.focus())
     entry_fecha.bind("<Return>", lambda e: btn_aceptar.invoke())
