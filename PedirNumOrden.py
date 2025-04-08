@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from ObtenerDatos import obtener_datos
-#from Datos import Datos 
+# from Datos import Datos 
 
 def pedir_numero_orden(datos_producto):
     """
@@ -11,65 +11,58 @@ def pedir_numero_orden(datos_producto):
     def enviar():
         """Valida que se haya ingresado un número entero dentro del rango permitido."""
         try:
-            numero_orden = entry_orden.get()  # Convierte la entrada a entero
+            numero_orden = entry_orden.get()
             
-            # Aquí se realiza la comprobación de que el número exista en la base de datos
-            if len(numero_orden)<=8:
-                #Aquí buscará en la BBDD si es num existe
-                datosRecibidos = obtener_datos(numero_orden,1)
-                datos_producto.numOrden = numero_orden  # Actualiza el número de orden en el objeto Datos
+            if len(numero_orden) <= 8:
+                datosRecibidos = obtener_datos(numero_orden, 1)
+                datos_producto.numOrden = numero_orden
                 datos_producto.nombreArticulo = datosRecibidos[2] if datosRecibidos else None
                 datos_producto.codBarras = datosRecibidos[3] if datosRecibidos else None
 
                 if datosRecibidos is None:
                     messagebox.showerror("Número no encontrado", "El número de orden no se encuentra en la base de datos.")
                 else:
-                    root.quit()  # Cierra la ventana si el número es correcto
+                    root.quit()
             else:
-                messagebox.showerror("Número inválido", "El número debe tener como max 8 dígitos.")
+                messagebox.showerror("Número inválido", "El número debe tener como máximo 8 dígitos.")
         
         except ValueError:
             messagebox.showwarning("Entrada inválida", "Por favor, ingrese un número entero.")
 
     # Crear ventana principal
     root = tk.Tk()
-    root.title("Generador de Etiqueta")  # Título de la ventana
-    root.geometry("300x320")  # Tamaño fijo
-    # Calcular el tamaño de la pantalla y centrar la ventana
-    pantalla_ancho = root.winfo_screenwidth()  # Obtener el ancho de la pantalla
-    pantalla_alto = root.winfo_screenheight()  # Obtener el alto de la pantalla
-    ventana_ancho = 300  # Ancho de la ventana
-    ventana_alto = 320  # Alto de la ventana
-    
-    # Calcular las coordenadas para centrar la ventana
+    root.title("Generador de Etiqueta")
+    root.geometry("300x320")
+
+    # Centrado de ventana
+    pantalla_ancho = root.winfo_screenwidth()
+    pantalla_alto = root.winfo_screenheight()
+    ventana_ancho = 300
+    ventana_alto = 320
     x = (pantalla_ancho // 2) - (ventana_ancho // 2)
     y = (pantalla_alto // 2) - (ventana_alto // 2)
-
-    # Establecer la posición en el centro de la pantalla
     root.geometry(f"{ventana_ancho}x{ventana_alto}+{x}+{y}")
+    root.resizable(False, False)
 
-    root.resizable(False, False)  # Evita que la ventana cambie de tamaño
+    datos = {"numero_orden": None}
 
-    datos = {"numero_orden": None}  # Diccionario para almacenar el número de orden
-
-    # Crear un frame para centrar todos los elementos
+    # Frame para centrar contenido
     frame = tk.Frame(root)
-    frame.place(relx=0.5, rely=0.5, anchor="center")  # Centra el frame en la ventana
-
-    # Etiqueta para indicar qué debe ingresar el usuario
+    frame.place(relx=0.5, rely=0.5, anchor="center")
 
     tk.Label(frame, text="Ingrese un número de orden:", font=("Arial", 12)).pack(pady=10)
 
-    # Campo de entrada para el número de orden
     entry_orden = tk.Entry(frame, font=("Arial", 12), width=23)
     entry_orden.pack(pady=5)
-    entry_orden.focus() 
+    entry_orden.focus()
 
-    # Botón para confirmar la entrada
+    # Asociar Enter a botón aceptar
+    entry_orden.bind("<Return>", lambda e: btn_aceptar.invoke())
+
     btn_aceptar = tk.Button(frame, text="Aceptar", font=("Arial", 12), command=enviar)
     btn_aceptar.pack(pady=10)
 
-    root.mainloop()  # Mantiene la ventana abierta hasta que el usuario interactúe
-    root.destroy()  # Cierra la ventana al finalizar
+    root.mainloop()
+    root.destroy()
 
-    return datos["numero_orden"]  # Retorna el número de orden ingresado si es válido
+    return datos["numero_orden"]
